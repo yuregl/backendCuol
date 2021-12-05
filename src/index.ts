@@ -1,5 +1,17 @@
-import express from "express";
+import "reflect-metadata";
+import dotenv from "dotenv";
+import { exportApp } from "./routes/index";
+import { startDatabase } from "./database/index";
 
-const app = express();
+dotenv.config();
 
-app.listen(3000, () => console.log("server is running"));
+async function start() {
+  await startDatabase();
+  const port = process.env.PORT;
+  const app = await exportApp();
+  app.listen(port, () => {
+    console.log(`Server is running in port http://localhost:${port}`);
+  });
+}
+
+start();
