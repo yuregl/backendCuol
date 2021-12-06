@@ -11,9 +11,12 @@ class CitiesService {
   async executeCreateCity(req: ICities) {
     const { city, state } = req;
 
+    const cityUpperCase = city.toUpperCase();
+    const stateUpperCase = state.toUpperCase();
+
     const citiesAlreadyExist = await this.citiesRepositories.findOne({
-      city,
-      state,
+      city: cityUpperCase,
+      state: stateUpperCase,
     });
 
     if (citiesAlreadyExist) {
@@ -21,8 +24,8 @@ class CitiesService {
     }
 
     const saveCity = this.citiesRepositories.create({
-      city,
-      state,
+      city: cityUpperCase,
+      state: stateUpperCase,
     });
 
     return await this.citiesRepositories.save(saveCity);
