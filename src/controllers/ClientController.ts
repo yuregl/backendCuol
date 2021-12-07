@@ -9,18 +9,15 @@ class ClientsController {
 
   handleCreateClient = async (request: Request, response: Response) => {
     const { full_name, gender, birth_date, cities_id } = request.body;
-    try {
-      await this.clientService.executeCreateClient({
-        full_name,
-        gender,
-        birth_date,
-        cities_id,
-      });
 
-      return response.status(201).json({ message: "Criado com sucesso" });
-    } catch (error) {
-      return response.status(500).json({ message: `${error}` });
-    }
+    await this.clientService.executeCreateClient({
+      full_name,
+      gender,
+      birth_date,
+      cities_id,
+    });
+
+    return response.status(201).json({ message: "Criado com sucesso" });
   };
 
   handleGetClientById = async (request: Request, response: Response) => {
@@ -30,8 +27,7 @@ class ClientsController {
     if (result.id) {
       const capitalizeName = result.capitalizeName(result.full_name);
       const year = result.birth_date.getFullYear();
-      const value = moment().subtract(year, "years").calendar();
-      const [, age] = value.split("/00");
+      const age = result.getAge(year);
       return response
         .status(200)
         .json({ ...result, full_name: capitalizeName, age });
@@ -76,6 +72,12 @@ class ClientsController {
     const capitalizeName = result.capitalizeName(result.full_name);
 
     return response.status(200).json({ ...result, full_name: capitalizeName });
+  };
+
+  handleDeleteClient = async (request: Request, response: Response) => {
+    const { id } = request.params;
+    await this.clientService.executeDeleteClient(parseInt(id));
+    return response.status(200).json({ message: "Deletado com sucessos" });
   };
 }
 
