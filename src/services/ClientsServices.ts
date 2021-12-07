@@ -43,6 +43,9 @@ class ClientsService {
 
   async executeGetClientById(id: number) {
     const client = await this.clientsRepositories.findOne({ id });
+    if (!client) {
+      throw new Error("Cliente não existe");
+    }
     return client;
   }
 
@@ -61,8 +64,22 @@ class ClientsService {
   async executeUpdateName(id: number, name: string) {
     const nameLowerCase = name.toLowerCase();
     const client = await this.clientsRepositories.findOne({ id });
+
+    if (!client) {
+      throw new Error("Cliente não existe");
+    }
     client.changeName(nameLowerCase);
     return await this.clientsRepositories.save(client);
+  }
+
+  async executeDeleteClient(id: number) {
+    const client = await this.clientsRepositories.findOne({ id });
+
+    if (!client) {
+      throw new Error("Cliente com esse id não existe");
+    }
+
+    return await this.clientsRepositories.delete({ id });
   }
 }
 
