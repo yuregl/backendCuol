@@ -24,6 +24,11 @@ function createClientRouter() {
     "/clients/update/:id",
     clientsController.handleUpdateNameClient
   );
+  routesClient.delete(
+    "/clients/delete/:id",
+    clientsController.handleDeleteClient
+  );
+
   return routesClient;
 }
 
