@@ -16,10 +16,10 @@ class ClientsService {
 
   async executeCreateClient(req: ObjClient) {
     const { full_name, cities_id, birth_date, gender } = req;
-    const fullNameUpperCase = full_name.toUpperCase();
+    const fullNameLowerCase = full_name.toLowerCase();
 
     const clientAlreadyExist = await this.clientsRepositories.findOne({
-      full_name: fullNameUpperCase,
+      full_name: fullNameLowerCase,
     });
 
     if (clientAlreadyExist) {
@@ -33,12 +33,29 @@ class ClientsService {
     }
 
     const client = this.clientsRepositories.create({
-      full_name: fullNameUpperCase,
+      full_name: fullNameLowerCase,
       cities_id,
       birth_date,
       gender,
     });
     return await this.clientsRepositories.save(client);
+  }
+
+  async executeGetClientById(id: number) {
+    const client = await this.clientsRepositories.findOne({ id });
+    return client;
+  }
+
+  async executeGetClientByName(full_name: string) {
+    const nameLowerCase = full_name.toLowerCase();
+    const client = await this.clientsRepositories.findOne({
+      full_name: nameLowerCase,
+    });
+
+    if (client === undefined) {
+      throw new Error("Cliente não existe");
+    }
+    return client;
   }
 }
 
