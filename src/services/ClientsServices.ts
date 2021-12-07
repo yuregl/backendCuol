@@ -57,6 +57,13 @@ class ClientsService {
     }
     return client;
   }
+
+  async executeUpdateName(id: number, name: string) {
+    const nameLowerCase = name.toLowerCase();
+    const client = await this.clientsRepositories.findOne({ id });
+    client.changeName(nameLowerCase);
+    return await this.clientsRepositories.save(client);
+  }
 }
 
 export { ClientsService };
