@@ -1,14 +1,14 @@
 import { CitiesRepositories } from "../repositories/CitiesRepositories";
 
-interface ICities {
+type ObjCities = {
   city: string;
   state: string;
-}
+};
 
 class CitiesService {
   constructor(private citiesRepositories: CitiesRepositories) {}
 
-  async executeCreateCity(req: ICities) {
+  async executeCreateCity(req: ObjCities) {
     const { city, state } = req;
 
     const cityUpperCase = city.toUpperCase();
@@ -29,6 +29,18 @@ class CitiesService {
     });
 
     return await this.citiesRepositories.save(saveCity);
+  }
+
+  async cityAlreadyExist(id: number) {
+    const existAlready = await this.citiesRepositories.findOne({
+      id,
+    });
+
+    if (!existAlready) {
+      return false;
+    }
+
+    return existAlready;
   }
 }
 
