@@ -1,4 +1,5 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
+import "express-async-errors";
 import morgan from "morgan";
 import cors from "cors";
 
@@ -12,18 +13,20 @@ async function exportApp() {
   app.use(express.json());
   app.use(createCitiesRouter());
   app.use(createClientRouter());
-  app.use((err: Error, request: Request, response: Response) => {
-    if (err instanceof Error) {
-      return response.status(400).json({
-        error: err.message,
+  app.use(
+    (err: Error, request: Request, response: Response, next: NextFunction) => {
+      if (err instanceof Error) {
+        return response.status(400).json({
+          error: err.message,
+        });
+      }
+
+      return response.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
       });
     }
-
-    return response.status(500).json({
-      status: "error",
-      message: "Internal Server Error",
-    });
-  });
+  );
   return app;
 }
 
