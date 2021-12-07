@@ -63,6 +63,20 @@ class ClientsController {
       return response.status(404).json({ message: "Cliente não encontrado" });
     }
   };
+
+  handleUpdateNameClient = async (request: Request, response: Response) => {
+    const { id } = request.params;
+    const { full_name } = request.body;
+
+    const result = await this.clientService.executeUpdateName(
+      parseInt(id),
+      full_name
+    );
+
+    const capitalizeName = result.capitalizeName(result.full_name);
+
+    return response.status(200).json({ ...result, full_name: capitalizeName });
+  };
 }
 
 export { ClientsController };
