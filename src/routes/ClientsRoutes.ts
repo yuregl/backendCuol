@@ -20,7 +20,10 @@ function createClientRouter() {
   routesClient.post("/clients/new", clientsController.handleCreateClient);
   routesClient.get("/clients/:id", clientsController.handleGetClientById);
   routesClient.get("/clients?", clientsController.handleGetClientByName);
-
+  routesClient.patch(
+    "/clients/update/:id",
+    clientsController.handleUpdateNameClient
+  );
   return routesClient;
 }
 
