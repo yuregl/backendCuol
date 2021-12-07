@@ -44,6 +44,11 @@ class Clients {
 
     return full_name;
   }
+
+  changeName(name: string) {
+    this.full_name = name;
+    return name;
+  }
 }
 
 export { Clients };
