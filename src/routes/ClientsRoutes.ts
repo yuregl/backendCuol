@@ -18,6 +18,8 @@ function createClientRouter() {
   const clientsController = new ClientsController(clientsService);
 
   routesClient.post("/clients/new", clientsController.handleCreateClient);
+  routesClient.get("/clients/:id", clientsController.handleGetClientById);
+  routesClient.get("/clients?", clientsController.handleGetClientByName);
 
   return routesClient;
 }
