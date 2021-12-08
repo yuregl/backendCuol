@@ -23,7 +23,7 @@ class Clients {
   @Column()
   full_name: string;
 
-  @Column({ type: "enum", enum: Gender })
+  @Column({ type: "simple-enum", enum: Gender })
   gender: string;
 
   @Column()
