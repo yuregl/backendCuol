@@ -10,7 +10,10 @@ function createCitiesRouter() {
   const citiesRepositories = getCustomRepository(CitiesRepositories);
   const citiesService = new CitiesService(citiesRepositories);
   const citiesController = new CitiesController(citiesService);
+
   routeCities.post("/cities/new", citiesController.handleCreateCity);
+  routeCities.get("/cities?", citiesController.handleGetCitiesByState);
+  routeCities.get("/cities/:id", citiesController.handleGetCityById);
 
   return routeCities;
 }
