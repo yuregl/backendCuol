@@ -6,4 +6,5 @@ tmp/
 temp/
 src/util/image
 .env
+database.env
 coverage/
