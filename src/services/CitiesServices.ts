@@ -1,8 +1,8 @@
 import { CitiesRepositories } from "../repositories/CitiesRepositories";
 
 type ObjCities = {
-  city: string;
-  state: string;
+  city?: string;
+  state?: string;
 };
 
 class CitiesService {
@@ -11,11 +11,11 @@ class CitiesService {
   async executeCreateCity(req: ObjCities) {
     const { city, state } = req;
 
-    const cityUpperCase = city.toUpperCase();
+    const cityLowerCase = city.toLowerCase();
     const stateUpperCase = state.toUpperCase();
 
     const citiesAlreadyExist = await this.citiesRepositories.findOne({
-      city: cityUpperCase,
+      city: cityLowerCase,
       state: stateUpperCase,
     });
 
@@ -24,7 +24,7 @@ class CitiesService {
     }
 
     const saveCity = this.citiesRepositories.create({
-      city: cityUpperCase,
+      city: cityLowerCase,
       state: stateUpperCase,
     });
 
@@ -41,6 +41,19 @@ class CitiesService {
     }
 
     return existAlready;
+  }
+
+  async getCities(value: ObjCities) {
+    const cities = await this.citiesRepositories.find(value);
+    return cities;
+  }
+
+  async getCityById(id: number) {
+    const city = await this.citiesRepositories.findOne({ id });
+    if (!city) {
+      throw new Error("Cidade não existe");
+    }
+    return city;
   }
 }
 
