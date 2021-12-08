@@ -39,7 +39,6 @@ class CitiesController {
 
   handleGetCityById = async (request: Request, response: Response) => {
     const { id } = request.params;
-    console.log("MZR", request.params);
     const result = await this.cityService.getCityById(parseInt(id));
     return response.status(200).json(result);
   };

@@ -10,6 +10,11 @@ import { Cities } from "./Cities";
 
 moment().locale("pt-br");
 
+enum Gender {
+  MALE = "male",
+  FEMALE = "female",
+}
+
 @Entity("clients")
 class Clients {
   @PrimaryGeneratedColumn("increment")
@@ -18,7 +23,7 @@ class Clients {
   @Column()
   full_name: string;
 
-  @Column()
+  @Column({ type: "enum", enum: Gender })
   gender: string;
 
   @Column()
