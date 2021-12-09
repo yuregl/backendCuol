@@ -2,12 +2,19 @@ import { Request, Response } from "express";
 import moment from "moment";
 import { ClientsService } from "../services/ClientsServices";
 
+import { validationResult } from "express-validator";
+
 moment().locale("pt-br");
 
 class ClientsController {
   constructor(private clientService: ClientsService) {}
 
   handleCreateClient = async (request: Request, response: Response) => {
+    const errors = validationResult(request);
+
+    if (!errors.isEmpty()) {
+      return response.status(400).json({ errors: errors.array() });
+    }
     const { full_name, gender, birth_date, cities_id } = request.body;
 
     await this.clientService.executeCreateClient({
@@ -21,6 +28,10 @@ class ClientsController {
   };
 
   handleGetClientById = async (request: Request, response: Response) => {
+    const errors = validationResult(request);
+    if (!errors.isEmpty()) {
+      return response.status(400).json({ errors: errors.array() });
+    }
     const { id } = request.params;
     const result = await this.clientService.executeGetClientById(parseInt(id));
 
@@ -37,6 +48,10 @@ class ClientsController {
   };
 
   handleGetClientByName = async (request: Request, response: Response) => {
+    const errors = validationResult(request);
+    if (!errors.isEmpty()) {
+      return response.status(400).json({ errors: errors.array() });
+    }
     const name = request.query["full_name"]
       ? request.query["full_name"].toString()
       : undefined;
@@ -61,6 +76,10 @@ class ClientsController {
   };
 
   handleUpdateNameClient = async (request: Request, response: Response) => {
+    const errors = validationResult(request);
+    if (!errors.isEmpty()) {
+      return response.status(400).json({ errors: errors.array() });
+    }
     const { id } = request.params;
     const { full_name } = request.body;
 
@@ -75,6 +94,10 @@ class ClientsController {
   };
 
   handleDeleteClient = async (request: Request, response: Response) => {
+    const errors = validationResult(request);
+    if (!errors.isEmpty()) {
+      return response.status(400).json({ errors: errors.array() });
+    }
     const { id } = request.params;
     await this.clientService.executeDeleteClient(parseInt(id));
     return response.status(200).json({ message: "Deletado com sucessos" });
