@@ -42,7 +42,14 @@ class ClientsService {
   }
 
   async executeGetClientById(id: number) {
-    const client = await this.clientsRepositories.findOne({ id });
+    const client = await this.clientsRepositories.findOne(
+      {
+        id,
+      },
+      {
+        relations: ["cities"],
+      }
+    );
     if (!client) {
       throw new Error("Cliente não existe");
     }
@@ -51,9 +58,14 @@ class ClientsService {
 
   async executeGetClientByName(full_name: string) {
     const nameLowerCase = full_name.toLowerCase();
-    const client = await this.clientsRepositories.findOne({
-      full_name: nameLowerCase,
-    });
+    const client = await this.clientsRepositories.findOne(
+      {
+        full_name: nameLowerCase,
+      },
+      {
+        relations: ["cities"],
+      }
+    );
 
     if (client === undefined) {
       throw new Error("Cliente não existe");
@@ -63,7 +75,14 @@ class ClientsService {
 
   async executeUpdateName(id: number, name: string) {
     const nameLowerCase = name.toLowerCase();
-    const client = await this.clientsRepositories.findOne({ id });
+    const client = await this.clientsRepositories.findOne(
+      {
+        id,
+      },
+      {
+        relations: ["cities"],
+      }
+    );
 
     if (!client) {
       throw new Error("Cliente não existe");
