@@ -7,6 +7,14 @@ import { ClientsRepositories } from "../repositories/ClientsRepositories";
 import { CitiesService } from "../services/CitiesServices";
 import { CitiesRepositories } from "../repositories/CitiesRepositories";
 
+import {
+  createClients,
+  deleteClients,
+  searchClientById,
+  searchClientByName,
+  updateNameClient,
+} from "../validators/Clients/Clients";
+
 const routesClient = Router();
 
 function createClientRouter() {
@@ -17,15 +25,33 @@ function createClientRouter() {
   const clientsService = new ClientsService(clientsRepositories, citiesService);
   const clientsController = new ClientsController(clientsService);
 
-  routesClient.post("/clients/new", clientsController.handleCreateClient);
-  routesClient.get("/clients/:id", clientsController.handleGetClientById);
-  routesClient.get("/clients?", clientsController.handleGetClientByName);
+  routesClient.post(
+    "/clients/new",
+    createClients,
+    clientsController.handleCreateClient
+  );
+
+  routesClient.get(
+    "/clients/:id",
+    searchClientById,
+    clientsController.handleGetClientById
+  );
+
+  routesClient.get(
+    "/clients?",
+    searchClientByName,
+    clientsController.handleGetClientByName
+  );
+
   routesClient.patch(
     "/clients/update/:id",
+    updateNameClient,
     clientsController.handleUpdateNameClient
   );
+
   routesClient.delete(
     "/clients/delete/:id",
+    deleteClients,
     clientsController.handleDeleteClient
   );
 
